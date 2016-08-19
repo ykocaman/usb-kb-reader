@@ -1,12 +1,27 @@
-CC = gcc
+CC      ?= gcc
+CFLAGS  = -g -Iiniparser/src
+LFLAGS  = -Liniparser -liniparser
+RM      ?= rm -f
+SRC 	= src
 
-all: usb-kb-reader clean
+all: usb-kb-reader clean run
 
-usb-kb-reader: usb-kb-reader.c
-	$(CC) -o  usb-kb-reader usb-kb-reader.c
+
+usb-kb-reader: $(SRC)/usb-kb-reader.c
+	$(CC) $(CFLAGS) -o usb-kb-reader $(SRC)/*.c $(LFLAGS) 
+
+run:
+	@(sudo ./usb-kb-reader)
+
+configure:
+	@(cd iniparser ; $(MAKE))
 
 clean:
-	rm -f *.o
+	$(RM) $(SRC)/*.o
 
 install: all
 	mv ./usb-kb-reader /usr/bin/usb-kb-reader
+
+uninstall:
+	$(RM) /usr/bin/usb-kb-reader
+

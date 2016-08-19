@@ -1,19 +1,20 @@
 This program for hooking inputs of [USB Barcode Readers](https://www.google.com.tr/search?q=usb+barcode+reader&tbm=isch) which sends scanned data as keyboard input in ubuntu.
 
+**Configure:**
+```
+make configure
+```
+
 **Compile:**
 ```
 make
 ```
 
-**Install:**
-```
-make install
-```
 
-**Usage:**
-```
-sudo usb-kb-reader /dev/input/event14
-```
+**Config File:**  
+- Move config.ini.example file as config.ini.  
+- Edit config file and write device handler and command will be executed.  
+
 
 **Available keyboard inputs:**
 ```
@@ -30,14 +31,7 @@ grep -E 'Name|Handlers|EV' /proc/bus/input/devices | grep 'EV=120013' -B2
 >H: Handlers=sysrq kbd **event14**  
 >B: EV=120013  
 
-
-**Example dynamic usage of "USB Reader With Keyboard USB Reader With Keyboard":**
+**Usage:**
 ```
-usb-kb-reader /dev/input/\
-	$(
-		grep -E 'Name|Handlers|EV' /proc/bus/input/devices |\
-		grep 'EV=120013' -B2 |\
-		grep 'USB Reader*' -A2 |\
-		grep -Eo 'event[0-9]+'\
-	) 
+sudo usb-kb-reader
 ```

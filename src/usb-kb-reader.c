@@ -1,4 +1,4 @@
-#include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -8,44 +8,32 @@
 #include <sys/types.h>
 #include <linux/kd.h>
 
+#include "config.h"
+
 int main(int argc, char* argv[])
 {
-    int     fd          = -1;
+    int     file_desc   = -1;
     int     result      = 0;
-    int     rd          = 0;
-    char     digit      = 0;
-
-    char    output  [32];
-    char    name    [256]   = "Unknown";
-    char    device  [256];
+    char    digit       = 0;
+    char    *output;
 
     struct  input_event ev[64];
 
-    if(argc > 1){
-        strcpy(device,argv[1]);
-    }else{
-        printf("Missing parameter, give a event file as parameter, \nex: usb-kb-reader /dev/input/event14\n");
-        printf("\n\e[38;5;196mAvailable keyboard inputs:\n");
-        printf("\e[0mgrep -E 'Name|Handlers|EV' /proc/bus/input/devices | grep 'EV=120013' -B2\n");
-        printf("\n\e[38;5;196mExample usage of USB Reader with Keyboard:\n");
-        printf("\e[0musb-kb-reader /dev/input/$(grep -E 'Name|Handlers|EV' /proc/bus/input/devices | grep 'EV=120013' -B2 | grep 'Reader' -A2 | grep -Eo 'event[0-9]+')\n\n");
-
-        return 0;
+    if(parse_ini_file("config.ini", config) == EXIT_FAILURE){
+        printf("Missing config file,\nCopy config->ini.example as config->ini\n");
+        return EXIT_FAILURE;
     }
 
-    fd = open(device, O_RDONLY);
-    if (fd == -1) {
+    file_desc = open(config->event_file, O_RDONLY);
+    if (file_desc == -1) {
         printf("Failed to open event device.\nTry again, with \"sudo\"\n");
         return EXIT_FAILURE;
     }
 
-    ioctl ( fd, KDSKBMODE, K_MEDIUMRAW);
-
-    result = ioctl(fd, EVIOCGNAME(sizeof(name)), name);
-    printf ("Reading From : %s (%s)\n", device, name);
+    printf ("Reading From : %s (%s)\n", config->event_file, config->device);
 
     printf("Getting exclusive access: ");
-    result = ioctl(fd, EVIOCGRAB, 1);
+    result = ioctl(file_desc, EVIOCGRAB, 1);
     if(result != 0) {
         printf("FAILURE\n");
         return EXIT_FAILURE;
@@ -56,10 +44,12 @@ int main(int argc, char* argv[])
     // disable buffering
     //setbuf(stdout, NULL);
 
+    output  = malloc(32 * sizeof(char));
+
     while (1)
     {
         // if it crashes then break
-        if ((rd = read(fd, ev, sizeof ev)) < sizeof(struct input_event)) {
+        if ((read(file_desc, ev, sizeof ev)) < sizeof(struct input_event)) {
             break;
         }
 
@@ -89,6 +79,8 @@ int main(int argc, char* argv[])
             if(ev[1].code == KEY_ENTER){
                 printf("%s\n", output);
 
+                sprintf(config->command, config->command_template, output);
+                system(config->command);
                 // reset output string
                 output[0] = '\0'; 
             }
@@ -96,7 +88,7 @@ int main(int argc, char* argv[])
     }
 
     // free device file
-    result = ioctl(fd, EVIOCGRAB, 0);
-    close(fd);
-    return 0;
+    result = ioctl(file_desc, EVIOCGRAB, 0);
+    close(file_desc);
+    return EXIT_SUCCESS;
 }

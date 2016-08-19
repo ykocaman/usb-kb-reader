@@ -1,2 +1,3 @@
 usb-kb-reader
 *.o
+config.ini

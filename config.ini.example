@@ -1,0 +1,15 @@
+#
+# USB Barcode Reader config file
+#
+
+# For active device list:
+# grep -E 'Name|Handlers|EV' /proc/bus/input/devices | grep 'EV=120013' -B2
+#
+
+[Device]
+Name		= USB Reader With Keyboard USB Reader With Keyboard;
+EventFile	= /dev/input/event14;
+
+# %s is parameter
+[Shell]
+Command		= sudo -u user chromium-browser --incognito --kiosk http://kiosk.url/?card_id=%s &;
