@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "config.h"
 
 int parse_ini_file(char * ini_name)

@@ -1,5 +1,5 @@
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _USB_KB_READER_CONFIG_H_
+#define _USB_KB_READER_CONFIG_H_
 
 #include "iniparser.h"
 
