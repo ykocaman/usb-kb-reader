@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>USB Barcode Reader by ykocaman</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>USB Barcode Reader</h1>
+        <p>for hooking inputs of USB Barcode Reader</p>
+
+        <p class="view"><a href="https://github.com/ykocaman/usb-kb-reader">View the Project on GitHub <small>ykocaman/usb-kb-reader</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/ykocaman/usb-kb-reader/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/ykocaman/usb-kb-reader/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/ykocaman/usb-kb-reader">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>This program for hooking inputs of <a href="https://www.google.com.tr/search?q=usb+barcode+reader&amp;tbm=isch">USB Barcode Readers</a> which sends scanned data as keyboard input in ubuntu.</p>
+
+<p><strong>Configure:</strong></p>
+
+<pre><code>make configure
+</code></pre>
+
+<p><strong>Compile:</strong></p>
+
+<pre><code>make
+</code></pre>
+
+<p><strong>Config File:</strong>  </p>
+
+<ul>
+<li>Move config.ini.example file as config.ini.<br>
+</li>
+<li>Edit config file and write device handler and command will be executed.<br>
+</li>
+</ul>
+
+<p><strong>Available keyboard inputs:</strong></p>
+
+<pre><code>grep -E 'Name|Handlers|EV' /proc/bus/input/devices | grep 'EV=120013' -B2 
+</code></pre>
+
+<p><a href="http://unix.stackexchange.com/questions/74903/explain-ev-in-proc-bus-input-devices-data">Why EV=120013?</a></p>
+
+<p><strong>Output can be:</strong></p>
+
+<blockquote>
+<p>N: Name="Digital Media Keyboard"<br>
+H: Handlers=sysrq kbd <strong>event5</strong><br>
+B: EV=120013 </p>
+
+<p>N: Name="USB Reader With Keyboard USB Reader With Keyboard"<br>
+H: Handlers=sysrq kbd <strong>event14</strong><br>
+B: EV=120013  </p>
+</blockquote>
+
+<p><strong>Usage:</strong></p>
+
+<pre><code>sudo usb-kb-reader
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/ykocaman">ykocaman</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
