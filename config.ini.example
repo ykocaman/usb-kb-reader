@@ -12,4 +12,4 @@ EventFile	= /dev/input/event14;
 
 # %s is parameter
 [Shell]
-Command		= sudo -u user chromium-browser --host-rules='MAP * localhost:80'  http://kiosk.url/api.php?card_id=%s;
+Command		= sudo -u user chromium-browser --kiosk --host-rules='MAP * 127.0.0.1:80'  http://kiosk.url/api.php?card_id=%s &;
