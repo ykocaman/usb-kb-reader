@@ -17,7 +17,7 @@ int parse_ini_file(char * ini_name)
     config->event_file          = iniparser_getstring(config->ini, "device:eventfile", NULL); 
     config->command_template    = iniparser_getstring(config->ini, "shell:command", NULL); 
 
-    config->command = malloc(strlen(config->command_template) + 32 * sizeof(char));
+    config->command = (char*)malloc(strlen(config->command_template) + (32 * sizeof(char)));
 
     return EXIT_SUCCESS;
 }

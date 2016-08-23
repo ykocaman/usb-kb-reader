@@ -7,13 +7,14 @@ SRC 	= src
 all: usb-kb-reader clean run
 
 
-usb-kb-reader: $(SRC)/usb-kb-reader.c
+usb-kb-reader: $(SRC)/*.*
 	$(CC) $(CFLAGS) -o usb-kb-reader $(SRC)/*.c $(LFLAGS) 
 
 run:
 	@(sudo ./usb-kb-reader)
 
 configure:
+	@(./configure.sh)
 	@(cd iniparser ; $(MAKE))
 
 clean:

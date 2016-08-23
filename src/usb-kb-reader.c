@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
     struct  input_event ev[64];
 
     if(parse_ini_file("config.ini", config) == EXIT_FAILURE){
-        printf("Missing config file,\nCopy config->ini.example as config->ini\n");
+        printf("Missing config file,\nCopy config.ini.example as config.ini\n");
         return EXIT_FAILURE;
     }
 
@@ -19,7 +19,6 @@ int main(int argc, char* argv[])
         printf("Failed to open event device.\nTry again, with \"sudo\"\n");
         return EXIT_FAILURE;
     }
-
     printf ("Reading From : %s (%s)\n", config->event_file, config->device);
 
     printf("Getting exclusive access: ");
@@ -34,7 +33,8 @@ int main(int argc, char* argv[])
     // disable buffering
     //setbuf(stdout, NULL);
 
-    output  = malloc(32 * sizeof(char));
+    output  = (char *)malloc(32 * sizeof(char));
+    output[0] = '\0'; 
 
     while (1)
     {
@@ -71,6 +71,7 @@ int main(int argc, char* argv[])
 
                 sprintf(config->command, config->command_template, output);
                 system(config->command);
+
                 // reset output string
                 output[0] = '\0'; 
             }
@@ -80,5 +81,10 @@ int main(int argc, char* argv[])
     // free device file
     result = ioctl(file_desc, EVIOCGRAB, 0);
     close(file_desc);
+
+    iniparser_freedict(config->ini);
+    free(config);
+    free(output);
+
     return EXIT_SUCCESS;
 }
