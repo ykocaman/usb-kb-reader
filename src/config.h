@@ -8,6 +8,7 @@ typedef struct _config {
     const char *command_template;
     const char *event_file;
     char *command;
+    char *config_file;
     dictionary  *ini;
 } Config;
 

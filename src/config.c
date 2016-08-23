@@ -4,10 +4,20 @@ int parse_ini_file(char * ini_name)
 {
     config = malloc(sizeof (Config));
     
-    config->ini = iniparser_load(ini_name);
+    config->config_file = (char*)malloc(1024 * sizeof(char));
+    config->config_file[0] = '\0';
+
+    if(getcwd(config->config_file, 1024) == NULL){
+       fprintf(stderr,"getcwd() error\n");
+       return EXIT_FAILURE;
+    }
+
+    strcat(config->config_file, ini_name);
+
+    config->ini = iniparser_load(config->config_file);
 
     if (config->ini==NULL) {
-        printf("Cannot parse file: %s\n", ini_name);
+        fprintf(stderr,"Cannot parse file: %s\n", ini_name);
         return EXIT_FAILURE;
     }
 

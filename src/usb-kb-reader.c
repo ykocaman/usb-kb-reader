@@ -9,14 +9,14 @@ int main(int argc, char* argv[])
 
     struct  input_event ev[64];
 
-    if(parse_ini_file("config.ini", config) == EXIT_FAILURE){
-        printf("Missing config file,\nCopy config.ini.example as config.ini\n");
+    if(parse_ini_file("/config.ini", config) == EXIT_FAILURE){
+        fprintf(stderr, "Missing config file,\nCopy config.ini.example as config.ini\n");
         return EXIT_FAILURE;
     }
 
     file_desc = open(config->event_file, O_RDONLY);
     if (file_desc == -1) {
-        printf("Failed to open event device.\nTry again, with \"sudo\"\n");
+        fprintf(stderr, "Failed to open event device.\nTry again, with \"sudo\"\n");
         return EXIT_FAILURE;
     }
     printf ("Reading From : %s (%s)\n", config->event_file, config->device);

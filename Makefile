@@ -19,10 +19,3 @@ configure:
 
 clean:
 	$(RM) $(SRC)/*.o
-
-install: all
-	mv ./usb-kb-reader /usr/bin/usb-kb-reader
-
-uninstall:
-	$(RM) /usr/bin/usb-kb-reader
-
